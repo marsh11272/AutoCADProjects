@@ -195,13 +195,21 @@
             <h1>Admin Panel</h1>
             <p>Manage AutoCAD projects for the curriculum.</p>
 
+            <!-- Database Status Section -->
+            <div class="projects-section">
+                <h2>Database Connection Status</h2>
+                <div id="dbStatus" class="loading">Checking database connection...</div>
+                <div style="margin-top: 15px;">
+                    <button class="btn alt" onclick="testDatabaseConnection()">Test Connection</button>
+                    <button class="btn alt" onclick="showDatabaseInfo()">Show DB Info</button>
+                </div>
+            </div>
+
             <!-- Existing Projects Section -->
             <div class="projects-section">
                 <h2>Existing Projects</h2>
                 <div id="projectsList" class="loading">Loading projects...</div>
-            </div>
-
-            <!-- Add New Project Section -->
+            </div> <!-- Add New Project Section -->
             <div class="project-form">
                 <h2>Add New Project</h2>
                 <form id="projectForm">
@@ -291,6 +299,7 @@
                 document.getElementById('passwordForm').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
                 errorDiv.textContent = '';
+                checkDatabaseStatus();
                 loadProjectsList();
             } else {
                 errorDiv.textContent = 'Incorrect password. Please try again.';
@@ -304,6 +313,90 @@
                 checkPassword();
             }
         });
+
+        // Database testing and status functions
+        async function checkDatabaseStatus() {
+            const statusDiv = document.getElementById('dbStatus');
+
+            try {
+                statusDiv.innerHTML = '<div class="loading">Testing database connection...</div>';
+
+                // Check if we're using localStorage or external database
+                if (projectDB.useLocalStorage) {
+                    statusDiv.innerHTML = `
+                        <div class="error">
+                            <strong>⚠️ Using Local Storage</strong><br>
+                            External database is not configured. Projects are stored locally in your browser.
+                            <br><br>
+                            <strong>API Key:</strong> ${projectDB.apiKey.substring(0, 20)}...<br>
+                            <strong>Bin ID:</strong> ${projectDB.binId}<br>
+                            <strong>Reason:</strong> API credentials appear to be placeholders
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Test the connection
+                const response = await fetch(`${projectDB.baseUrl}/${projectDB.binId}/latest`, {
+                    headers: {
+                        'X-Master-Key': projectDB.apiKey
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.innerHTML = `
+                        <div class="success">
+                            <strong>✅ Connected to JSONBin.io</strong><br>
+                            Successfully connected to external database.<br>
+                            <strong>Bin ID:</strong> ${projectDB.binId}<br>
+                            <strong>Last Updated:</strong> ${data.record.lastUpdated || 'Never'}<br>
+                            <strong>Projects in Database:</strong> ${(data.record.projects || []).length}
+                        </div>
+                    `;
+                } else {
+                    statusDiv.innerHTML = `
+                        <div class="error">
+                            <strong>❌ Connection Failed</strong><br>
+                            HTTP ${response.status}: ${response.statusText}<br>
+                            <strong>URL:</strong> ${projectDB.baseUrl}/${projectDB.binId}/latest<br>
+                            <strong>Check:</strong> API key and Bin ID may be incorrect
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="error">
+                        <strong>❌ Connection Error</strong><br>
+                        ${error.message}<br>
+                        <strong>Possible causes:</strong> Network issue, CORS, or invalid credentials
+                    </div>
+                `;
+            }
+        }
+
+        async function testDatabaseConnection() {
+            await checkDatabaseStatus();
+        }
+
+        function showDatabaseInfo() {
+            const info = `
+Database Configuration:
+• API Key: ${projectDB.apiKey}
+• Bin ID: ${projectDB.binId}
+• Base URL: ${projectDB.baseUrl}
+• Using Local Storage: ${projectDB.useLocalStorage}
+
+To configure JSONBin.io:
+1. Go to https://jsonbin.io
+2. Create account and new bin
+3. Replace the API key and Bin ID in database.js
+4. Refresh this page
+
+Current API Key starts with: ${projectDB.apiKey.substring(0, 20)}...
+            `;
+            alert(info);
+        }
 
         // Load and display all projects
         async function loadProjectsList() {

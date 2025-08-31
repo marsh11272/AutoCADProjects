@@ -9,65 +9,89 @@ class ProjectDatabase {
 
         // Fallback to localStorage if API is not configured
         this.useLocalStorage = !this.apiKey.includes('$2a$10$AgHZFgzRn9jhCP2779NBceL.p8j/KRUZK9N7gTmhPH6vxSKzpCNrS') || !this.binId.includes('y68b48912ae596e708fde00f9');
+
+        // Debug logging
+        console.log('🔧 ProjectDatabase initialized');
+        console.log(`📡 Using external database: ${!this.useLocalStorage}`);
+        console.log(`🔑 API Key: ${this.apiKey.substring(0, 10)}...`);
+        console.log(`📦 Bin ID: ${this.binId}`);
     }
 
     async loadProjects() {
+        console.log('📥 Loading projects...');
+
         if (this.useLocalStorage) {
-            console.log('Using localStorage as fallback...');
+            console.log('💾 Using localStorage as fallback...');
             return JSON.parse(localStorage.getItem('additionalProjects') || '[]');
         }
 
         try {
+            console.log(`🌐 Fetching from JSONBin.io: ${this.baseUrl}/${this.binId}/latest`);
+
             const response = await fetch(`${this.baseUrl}/${this.binId}/latest`, {
                 headers: {
                     'X-Master-Key': this.apiKey
                 }
             });
 
+            console.log(`📡 Response status: ${response.status} ${response.statusText}`);
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('✅ Successfully loaded from external database:', data);
             return data.record.projects || [];
         } catch (error) {
-            console.error('Error loading from external database:', error);
-            console.log('Falling back to localStorage...');
+            console.error('❌ Error loading from external database:', error);
+            console.log('💾 Falling back to localStorage...');
             return JSON.parse(localStorage.getItem('additionalProjects') || '[]');
         }
     }
 
     async saveProjects(projects) {
+        console.log('💾 Saving projects...', projects.length, 'projects');
+
         // Always save to localStorage as backup
         localStorage.setItem('additionalProjects', JSON.stringify(projects));
+        console.log('✅ Saved to localStorage');
 
         if (this.useLocalStorage) {
-            console.log('Saved to localStorage');
+            console.log('💾 Only using localStorage (external database not configured)');
             return true;
         }
 
         try {
+            console.log(`🌐 Saving to JSONBin.io: ${this.baseUrl}/${this.binId}`);
+
+            const payload = {
+                projects: projects,
+                lastUpdated: new Date().toISOString()
+            };
+
+            console.log('📤 Payload:', payload);
+
             const response = await fetch(`${this.baseUrl}/${this.binId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Master-Key': this.apiKey
                 },
-                body: JSON.stringify({
-                    projects: projects,
-                    lastUpdated: new Date().toISOString()
-                })
+                body: JSON.stringify(payload)
             });
+
+            console.log(`📡 Response status: ${response.status} ${response.statusText}`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            console.log('Projects saved to external database');
+            console.log('✅ Projects saved to external database successfully');
             return true;
         } catch (error) {
-            console.error('Error saving to external database:', error);
-            console.log('Projects saved to localStorage as fallback');
+            console.error('❌ Error saving to external database:', error);
+            console.log('💾 Projects saved to localStorage as fallback');
             return false;
         }
     }
