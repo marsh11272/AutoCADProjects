@@ -9,7 +9,7 @@
     <script src="database.js"></script>
     <style>
         .admin-container {
-            max-width: 800px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -25,82 +25,6 @@
 
         .admin-content {
             display: none;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #0c1426;
-            color: var(--text);
-            outline: none;
-            font-family: inherit;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .skills-input {
-            margin-bottom: 10px;
-        }
-
-        .add-skill-btn {
-            background: var(--accent2);
-            color: #0a1228;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .skill-item {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: center;
-        }
-
-        .remove-skill {
-            background: #ef4444;
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .steps-container,
-        .deliverables-container {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-
-        .step-item,
-        .deliverable-item {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 8px;
-            align-items: center;
         }
 
         .project-form {
@@ -135,6 +59,119 @@
             color: var(--accent2);
             margin-top: 10px;
         }
+
+        .projects-section {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        .project-item {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #0b1220, #0b1020);
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-edit {
+            background: var(--accent);
+            color: #06121f;
+            border: 1px solid #1f3b67;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+            border: 1px solid #dc2626;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-edit:hover {
+            opacity: 0.9;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+        }
+
+        .edit-form {
+            display: none;
+            background: var(--panel);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+        }
+
+        .skill-item,
+        .step-item,
+        .deliverable-item {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .skill-item input,
+        .step-item input,
+        .deliverable-item input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: #0c1426;
+            color: var(--text);
+        }
+
+        .remove-skill {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .add-skill-btn {
+            background: var(--accent2);
+            color: #0a1228;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .form-section {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--muted);
+            padding: 20px;
+        }
     </style>
 </head>
 
@@ -156,19 +193,26 @@
         <!-- Admin Content -->
         <div id="adminContent" class="admin-content">
             <h1>Admin Panel</h1>
-            <p>Add new AutoCAD projects to the curriculum.</p>
+            <p>Manage AutoCAD projects for the curriculum.</p>
 
+            <!-- Existing Projects Section -->
+            <div class="projects-section">
+                <h2>Existing Projects</h2>
+                <div id="projectsList" class="loading">Loading projects...</div>
+            </div>
+
+            <!-- Add New Project Section -->
             <div class="project-form">
                 <h2>Add New Project</h2>
                 <form id="projectForm">
-                    <div class="form-group">
-                        <label for="projectTitle">Project Title:</label>
-                        <input type="text" id="projectTitle" required />
+                    <div class="ctrl">
+                        <label for="projectTitle">Project Title</label>
+                        <input type="text" id="projectTitle" class="input" required />
                     </div>
 
-                    <div class="form-group">
-                        <label for="projectLevel">Level:</label>
-                        <select id="projectLevel" required>
+                    <div class="ctrl">
+                        <label for="projectLevel">Level</label>
+                        <select id="projectLevel" class="input" required>
                             <option value="">Select Level</option>
                             <option value="Intro">Intro</option>
                             <option value="Intermediate">Intermediate</option>
@@ -176,9 +220,9 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="projectTime">Time Requirement:</label>
-                        <select id="projectTime" required>
+                    <div class="ctrl">
+                        <label for="projectTime">Time Requirement</label>
+                        <select id="projectTime" class="input" required>
                             <option value="">Select Time</option>
                             <option value="1">About one class</option>
                             <option value="2">One to two classes</option>
@@ -186,15 +230,15 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="projectDesc">Description:</label>
-                        <textarea id="projectDesc" required
+                    <div class="ctrl">
+                        <label for="projectDesc">Description</label>
+                        <textarea id="projectDesc" class="input" required
                             placeholder="Brief description of the project..."></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label>Skills Required:</label>
-                        <div id="skillsContainer">
+                    <div class="ctrl">
+                        <label>Skills Required</label>
+                        <div id="skillsContainer" class="form-section">
                             <div class="skill-item">
                                 <input type="text" class="skills-input"
                                     placeholder="Enter skill (e.g., LINE, TRIM, etc.)" />
@@ -204,9 +248,9 @@
                         <button type="button" class="add-skill-btn" onclick="addSkill()">+ Add Skill</button>
                     </div>
 
-                    <div class="form-group">
-                        <label>Project Steps:</label>
-                        <div id="stepsContainer" class="steps-container">
+                    <div class="ctrl">
+                        <label>Project Steps</label>
+                        <div id="stepsContainer" class="form-section">
                             <div class="step-item">
                                 <input type="text" class="step-input" placeholder="Enter project step..." />
                                 <button type="button" class="remove-skill" onclick="removeStep(this)">Remove</button>
@@ -215,9 +259,9 @@
                         <button type="button" class="add-skill-btn" onclick="addStep()">+ Add Step</button>
                     </div>
 
-                    <div class="form-group">
-                        <label>Deliverables:</label>
-                        <div id="deliverablesContainer" class="deliverables-container">
+                    <div class="ctrl">
+                        <label>Deliverables</label>
+                        <div id="deliverablesContainer" class="form-section">
                             <div class="deliverable-item">
                                 <input type="text" class="deliverable-input" placeholder="Enter deliverable..." />
                                 <button type="button" class="remove-skill"
@@ -237,6 +281,7 @@
 
     <script>
         const ADMIN_PASSWORD = "012024";
+        let currentEditingProject = null;
 
         function checkPassword() {
             const password = document.getElementById('passwordInput').value;
@@ -246,6 +291,7 @@
                 document.getElementById('passwordForm').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
                 errorDiv.textContent = '';
+                loadProjectsList();
             } else {
                 errorDiv.textContent = 'Incorrect password. Please try again.';
                 document.getElementById('passwordInput').value = '';
@@ -259,6 +305,264 @@
             }
         });
 
+        // Load and display all projects
+        async function loadProjectsList() {
+            const projectsList = document.getElementById('projectsList');
+            try {
+                projectsList.innerHTML = '<div class="loading">Loading projects...</div>';
+
+                // Load both original and additional projects
+                const additionalProjects = await projectDB.loadProjects();
+
+                // Get original projects from the DATA array (we need to load this)
+                const originalProjects = [
+                    { id: 1, level: "Intro", time: 1, title: "Geometric Shapes Worksheet", desc: "Draw circles, rectangles, polygons, and ellipses. Practice trim, extend, offset, and fillet.", skills: ["OSNAP", "TRIM", "EXTEND", "OFFSET", "FILLET", "HATCH"], deliverables: ["One DWG with labeled shapes", "Hatch fill examples", "Saved layout ready to print"], steps: ["Create a new drawing, set units", "Draw 3 circles, 2 rectangles, 1 polygon, 1 ellipse", "Use offset and fillet to round corners", "Apply hatch patterns inside two shapes", "Add text labels and a title block"] },
+                    { id: 2, level: "Intro", time: 1, title: "Nameplate Design", desc: "Draw your name in block letters with a border and hatch pattern options.", skills: ["LINE", "POLYLINE", "HATCH", "ARRAY", "TEXT"], deliverables: ["DWG with nameplate", "Two hatch styles demonstrated"], steps: ["Draw a 180 by 60 rectangle border", "Sketch letters with polylines", "Add hatch inside letters", "Place name, class and date as text", "Create a viewport and set scale"] },
+                    { id: 3, level: "Intro", time: 1, title: "Floor Tile Pattern", desc: "Create a repeating tile pattern using rectangular and polar arrays.", skills: ["ARRAY", "COPY", "MIRROR", "OSNAP", "ORTHO"], deliverables: ["DWG with two tile variants", "Printed layout at known scale"], steps: ["Draw a single tile module", "Use rectangular array to form a 4 by 4 grid", "Try a polar array for a circular motif", "Annotate with dimensions and a short note"] },
+                    { id: 4, level: "Intermediate", time: 2, title: "Simple Furniture, Top View", desc: "Draw a table and four chairs inside a room outline. Add scale and dimensions.", skills: ["LAYER", "BLOCK", "SCALE", "DIMENSION", "OFFSET"], deliverables: ["DWG with furniture blocks", "Dimensions on key sizes"], steps: ["Set up layers for walls and furniture", "Draw room walls with proper thickness", "Create a chair as a block, insert four copies", "Add a table, center it, dimension important spans"] },
+                    { id: 5, level: "Intermediate", time: 2, title: "Orthographic Projection Practice", desc: "Given a sketch, draw top, front, and right‑side views aligned correctly.", skills: ["CONSTRUCTION LINES", "PROJECT", "DIMENSION", "ANNOTATE"], deliverables: ["Sheet with three views", "Centerlines and dimensions included"], steps: ["Set up three aligned view zones", "Project edges from the front to top and side", "Add centerlines and hidden edges as needed", "Dimension overall sizes and hole centers"] },
+                    { id: 6, level: "Intermediate", time: 2, title: "House Floor Plan, Basic", desc: "One room with walls, a door, and windows. Add dimensions and labels.", skills: ["WALL THICKNESS", "BLOCK", "DOOR SWING", "WINDOW", "DIMSTYLE"], deliverables: ["Basic plan with title block", "Door and window blocks"], steps: ["Offset walls to desired thickness", "Insert a door block with swing arc", "Add two windows and labels", "Dimension wall lengths and openings"] },
+                    { id: 7, level: "Advanced", time: 3, title: "Multi‑Room Floor Plan", desc: "Two bedrooms, one bathroom, living room, and kitchen with doors and windows.", skills: ["LAYERS", "BLOCK ATTRIBUTES", "DIMENSION", "ANNOTATE", "HATCH"], deliverables: ["Complete plan with symbols legend", "Room schedule table"], steps: ["Lay out exterior walls and interior partitions", "Insert door and window blocks with sizes", "Add fixtures and a simple kitchen layout", "Dimension exterior and key interior spans", "Create a legend and room schedule"] },
+                    { id: 8, level: "Advanced", time: 2, title: "Isometric Drawing Practice", desc: "Draw an isometric cube and cylinder, then a simple bracket in isometric.", skills: ["ISOPLANE", "ELLIPSE ISOCIRCLE", "SNAP", "DIMENSION"], deliverables: ["Sheet with three isometric drawings"], steps: ["Enable isometric snap and switch planes", "Draw a cube using isoplane left and right", "Add a cylinder with isocircle", "Attempt a small bracket from a provided sketch"] },
+                    { id: 9, level: "Advanced", time: 2, title: "Site Layout, Parking Lot", desc: "Draw a small lot with lanes, parking spaces, and a crosswalk. Plot to scale.", skills: ["SCALE", "ARRAY", "OFFSET", "LTSCALE", "PLOT"], deliverables: ["Plan plotted at 1 inch equals 20 feet", "Legend for markings"], steps: ["Set drawing units to feet and inches", "Lay out lane centerlines and offsets", "Array stall markings, add ADA space", "Annotate dimensions and notes, prepare plot"] },
+                    { id: 10, level: "Advanced", time: 2, title: "Detailed Object, 2D", desc: "Choose a chair, lamp, or desk. Draw in 2D with layers, blocks, and dimensions.", skills: ["BLOCK", "EXPLODE", "LAYER", "DIMENSION", "HATCH"], deliverables: ["Detailed 2D drawing with callouts"], steps: ["Set layers for outlines, hidden, center, dims", "Trace object proportions from a reference", "Convert repeated parts into blocks", "Add key dimensions and callouts"] },
+                    { id: 11, level: "Advanced", time: 3, title: "3D Solid, Revolve or Extrude", desc: "Model a bottle, vase, or pencil holder using extrude and revolve. Optional render.", skills: ["EXTRUDE", "REVOLVE", "UNION", "SUBTRACT", "RENDER"], deliverables: ["3D model, shaded view and a viewport layout"], steps: ["Sketch profiles on 2D planes", "Revolve or extrude to create solids", "Use union and subtract for details", "Set up a camera and shaded viewport"] },
+                    { id: 12, level: "Advanced", time: 3, title: "Capstone, Room or Small House", desc: "Combine walls, openings, furniture, dimensions, text, and hatch. Optional exterior 3D.", skills: ["LAYERS", "BLOCK ATTRIBUTES", "DIMSTYLE", "PAPER SPACE", "PLOT"], deliverables: ["Complete plan set page, ready to print"], steps: ["Assemble plan with symbols and labels", "Add furniture blocks and annotations", "Create paper space layout and title block", "Finalize plot settings and print"] }
+                ];
+
+                const allProjects = [...originalProjects, ...additionalProjects];
+
+                if (allProjects.length === 0) {
+                    projectsList.innerHTML = '<p class="desc">No projects found.</p>';
+                    return;
+                }
+
+                let html = '';
+                allProjects.forEach(project => {
+                    const timeText = project.time == 1 ? 'About one class' : project.time == 2 ? 'One to two classes' : 'Multi‑day';
+                    const isOriginal = project.id <= 12;
+
+                    html += `
+                        <div class="project-item" id="project-${project.id}">
+                            <div class="row">
+                                <span class="tag" data-level="${project.level}">
+                                    <span class="dot"></span>${project.level}
+                                </span>
+                                <span class="tag">
+                                    <span class="dot" style="background:${project.time == 1 ? '#a7f3d0' : project.time == 2 ? '#93c5fd' : '#fcd34d'}"></span>${timeText}
+                                </span>
+                                ${isOriginal ? '<span class="tag"><span class="dot" style="background:#60a5fa"></span>Original</span>' : ''}
+                            </div>
+                            <div class="title">${project.id}. ${project.title}</div>
+                            <p class="desc">${project.desc}</p>
+                            <div class="row">
+                                ${project.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                            </div>
+                            <div class="project-actions">
+                                ${!isOriginal ? `
+                                    <button class="btn-edit" onclick="editProject(${project.id})">Edit</button>
+                                    <button class="btn-delete" onclick="deleteProject(${project.id})">Delete</button>
+                                ` : '<span class="small">Original project - cannot be edited</span>'}
+                            </div>
+                            <div id="edit-form-${project.id}" class="edit-form"></div>
+                        </div>
+                    `;
+                });
+
+                projectsList.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                projectsList.innerHTML = '<div class="error">Error loading projects. Please refresh the page.</div>';
+            }
+        }
+
+        async function deleteProject(projectId) {
+            if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await projectDB.deleteProject(projectId);
+                document.getElementById(`project-${projectId}`).remove();
+                showMessage('Project deleted successfully!', 'success');
+            } catch (error) {
+                console.error('Error deleting project:', error);
+                showMessage('Error deleting project. Please try again.', 'error');
+            }
+        }
+
+        async function editProject(projectId) {
+            try {
+                const additionalProjects = await projectDB.loadProjects();
+                const project = additionalProjects.find(p => p.id === projectId);
+                if (!project) return;
+
+                const editFormDiv = document.getElementById(`edit-form-${projectId}`);
+
+                if (editFormDiv.style.display === 'block') {
+                    editFormDiv.style.display = 'none';
+                    return;
+                }
+
+                editFormDiv.innerHTML = `
+                    <h3>Edit Project</h3>
+                    <div class="ctrl">
+                        <label>Project Title</label>
+                        <input type="text" id="edit-title-${projectId}" class="input" value="${project.title}" />
+                    </div>
+                    <div class="ctrl">
+                        <label>Level</label>
+                        <select id="edit-level-${projectId}" class="input">
+                            <option value="Intro" ${project.level === 'Intro' ? 'selected' : ''}>Intro</option>
+                            <option value="Intermediate" ${project.level === 'Intermediate' ? 'selected' : ''}>Intermediate</option>
+                            <option value="Advanced" ${project.level === 'Advanced' ? 'selected' : ''}>Advanced</option>
+                        </select>
+                    </div>
+                    <div class="ctrl">
+                        <label>Time</label>
+                        <select id="edit-time-${projectId}" class="input">
+                            <option value="1" ${project.time == 1 ? 'selected' : ''}>About one class</option>
+                            <option value="2" ${project.time == 2 ? 'selected' : ''}>One to two classes</option>
+                            <option value="3" ${project.time == 3 ? 'selected' : ''}>Multi-day</option>
+                        </select>
+                    </div>
+                    <div class="ctrl">
+                        <label>Description</label>
+                        <textarea id="edit-desc-${projectId}" class="input">${project.desc}</textarea>
+                    </div>
+                    <div class="ctrl">
+                        <label>Skills</label>
+                        <div id="edit-skills-${projectId}" class="form-section">
+                            ${project.skills.map((skill, index) => `
+                                <div class="skill-item">
+                                    <input type="text" value="${skill}" />
+                                    <button type="button" class="remove-skill" onclick="this.parentElement.remove()">Remove</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button type="button" class="add-skill-btn" onclick="addEditSkill(${projectId})">+ Add Skill</button>
+                    </div>
+                    <div class="ctrl">
+                        <label>Steps</label>
+                        <div id="edit-steps-${projectId}" class="form-section">
+                            ${project.steps.map((step, index) => `
+                                <div class="step-item">
+                                    <input type="text" value="${step}" />
+                                    <button type="button" class="remove-skill" onclick="this.parentElement.remove()">Remove</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button type="button" class="add-skill-btn" onclick="addEditStep(${projectId})">+ Add Step</button>
+                    </div>
+                    <div class="ctrl">
+                        <label>Deliverables</label>
+                        <div id="edit-deliverables-${projectId}" class="form-section">
+                            ${project.deliverables.map((deliverable, index) => `
+                                <div class="deliverable-item">
+                                    <input type="text" value="${deliverable}" />
+                                    <button type="button" class="remove-skill" onclick="this.parentElement.remove()">Remove</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button type="button" class="add-skill-btn" onclick="addEditDeliverable(${projectId})">+ Add Deliverable</button>
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <button class="btn" onclick="saveProjectEdit(${projectId})">Save Changes</button>
+                        <button class="btn alt" onclick="cancelEdit(${projectId})">Cancel</button>
+                    </div>
+                `;
+                editFormDiv.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading project for edit:', error);
+            }
+        }
+
+        function addEditSkill(projectId) {
+            const container = document.getElementById(`edit-skills-${projectId}`);
+            const skillItem = document.createElement('div');
+            skillItem.className = 'skill-item';
+            skillItem.innerHTML = `
+                <input type="text" placeholder="Enter skill" />
+                <button type="button" class="remove-skill" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(skillItem);
+        }
+
+        function addEditStep(projectId) {
+            const container = document.getElementById(`edit-steps-${projectId}`);
+            const stepItem = document.createElement('div');
+            stepItem.className = 'step-item';
+            stepItem.innerHTML = `
+                <input type="text" placeholder="Enter step" />
+                <button type="button" class="remove-skill" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(stepItem);
+        }
+
+        function addEditDeliverable(projectId) {
+            const container = document.getElementById(`edit-deliverables-${projectId}`);
+            const deliverableItem = document.createElement('div');
+            deliverableItem.className = 'deliverable-item';
+            deliverableItem.innerHTML = `
+                <input type="text" placeholder="Enter deliverable" />
+                <button type="button" class="remove-skill" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(deliverableItem);
+        }
+
+        async function saveProjectEdit(projectId) {
+            try {
+                const title = document.getElementById(`edit-title-${projectId}`).value;
+                const level = document.getElementById(`edit-level-${projectId}`).value;
+                const time = parseInt(document.getElementById(`edit-time-${projectId}`).value);
+                const desc = document.getElementById(`edit-desc-${projectId}`).value;
+
+                const skills = [];
+                document.querySelectorAll(`#edit-skills-${projectId} input`).forEach(input => {
+                    if (input.value.trim()) skills.push(input.value.trim().toUpperCase());
+                });
+
+                const steps = [];
+                document.querySelectorAll(`#edit-steps-${projectId} input`).forEach(input => {
+                    if (input.value.trim()) steps.push(input.value.trim());
+                });
+
+                const deliverables = [];
+                document.querySelectorAll(`#edit-deliverables-${projectId} input`).forEach(input => {
+                    if (input.value.trim()) deliverables.push(input.value.trim());
+                });
+
+                const additionalProjects = await projectDB.loadProjects();
+                const projectIndex = additionalProjects.findIndex(p => p.id === projectId);
+
+                if (projectIndex !== -1) {
+                    additionalProjects[projectIndex] = {
+                        id: projectId,
+                        title, level, time, desc, skills, steps, deliverables
+                    };
+
+                    await projectDB.saveProjects(additionalProjects);
+                    cancelEdit(projectId);
+                    loadProjectsList();
+                    showMessage('Project updated successfully!', 'success');
+                }
+            } catch (error) {
+                console.error('Error saving project:', error);
+                showMessage('Error saving project. Please try again.', 'error');
+            }
+        }
+
+        function cancelEdit(projectId) {
+            document.getElementById(`edit-form-${projectId}`).style.display = 'none';
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('formMessage');
+            messageDiv.innerHTML = `<div class="${type}">${message}</div>`;
+            setTimeout(() => messageDiv.innerHTML = '', 3000);
+        }
+
+        // Add project form functions
         function addSkill() {
             const container = document.getElementById('skillsContainer');
             const skillItem = document.createElement('div');
@@ -307,20 +611,17 @@
         document.getElementById('projectForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
-            // Show loading state
             const submitBtn = document.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
             submitBtn.textContent = 'Adding Project...';
             submitBtn.disabled = true;
 
             try {
-                // Collect form data
                 const title = document.getElementById('projectTitle').value;
                 const level = document.getElementById('projectLevel').value;
                 const time = parseInt(document.getElementById('projectTime').value);
                 const desc = document.getElementById('projectDesc').value;
 
-                // Collect skills
                 const skills = [];
                 document.querySelectorAll('.skills-input').forEach(input => {
                     if (input.value.trim()) {
@@ -328,7 +629,6 @@
                     }
                 });
 
-                // Collect steps
                 const steps = [];
                 document.querySelectorAll('.step-input').forEach(input => {
                     if (input.value.trim()) {
@@ -336,7 +636,6 @@
                     }
                 });
 
-                // Collect deliverables
                 const deliverables = [];
                 document.querySelectorAll('.deliverable-input').forEach(input => {
                     if (input.value.trim()) {
@@ -344,13 +643,11 @@
                     }
                 });
 
-                // Validate required fields
                 if (!title || !level || !time || !desc || skills.length === 0 || steps.length === 0 || deliverables.length === 0) {
-                    document.getElementById('formMessage').innerHTML = '<div class="error">Please fill in all fields and add at least one skill, step, and deliverable.</div>';
+                    showMessage('Please fill in all fields and add at least one skill, step, and deliverable.', 'error');
                     return;
                 }
 
-                // Create new project object
                 const newProject = {
                     level: level,
                     time: time,
@@ -361,44 +658,42 @@
                     steps: steps
                 };
 
-                // Add project using database API
                 await projectDB.addProject(newProject);
+                showMessage('Project added successfully!', 'success');
 
-                // Show success message
-                document.getElementById('formMessage').innerHTML = '<div class="success">Project added successfully! It will appear on the home page.</div>';
-
-                // Reset form
                 document.getElementById('projectForm').reset();
-
-                // Reset dynamic fields
-                document.getElementById('skillsContainer').innerHTML = `
-                    <div class="skill-item">
-                        <input type="text" class="skills-input" placeholder="Enter skill (e.g., LINE, TRIM, etc.)" />
-                        <button type="button" class="remove-skill" onclick="removeSkill(this)">Remove</button>
-                    </div>
-                `;
-                document.getElementById('stepsContainer').innerHTML = `
-                    <div class="step-item">
-                        <input type="text" class="step-input" placeholder="Enter project step..." />
-                        <button type="button" class="remove-skill" onclick="removeStep(this)">Remove</button>
-                    </div>
-                `;
-                document.getElementById('deliverablesContainer').innerHTML = `
-                    <div class="deliverable-item">
-                        <input type="text" class="deliverable-input" placeholder="Enter deliverable..." />
-                        <button type="button" class="remove-skill" onclick="removeDeliverable(this)">Remove</button>
-                    </div>
-                `;
+                resetDynamicFields();
+                loadProjectsList();
 
             } catch (error) {
                 console.error('Error adding project:', error);
-                document.getElementById('formMessage').innerHTML = '<div class="error">Error adding project. Please try again.</div>';
+                showMessage('Error adding project. Please try again.', 'error');
             } finally {
-                // Restore button state
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }
         });
+
+        function resetDynamicFields() {
+            document.getElementById('skillsContainer').innerHTML = `
+                <div class="skill-item">
+                    <input type="text" class="skills-input" placeholder="Enter skill (e.g., LINE, TRIM, etc.)" />
+                    <button type="button" class="remove-skill" onclick="removeSkill(this)">Remove</button>
+                </div>
+            `;
+            document.getElementById('stepsContainer').innerHTML = `
+                <div class="step-item">
+                    <input type="text" class="step-input" placeholder="Enter project step..." />
+                    <button type="button" class="remove-skill" onclick="removeStep(this)">Remove</button>
+                </div>
+            `;
+            document.getElementById('deliverablesContainer').innerHTML = `
+                <div class="deliverable-item">
+                    <input type="text" class="deliverable-input" placeholder="Enter deliverable..." />
+                    <button type="button" class="remove-skill" onclick="removeDeliverable(this)">Remove</button>
+                </div>
+            `;
+        }
     </script>
 </body>
 
