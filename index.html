@@ -5,268 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AutoCAD Project Progression for Students</title>
-    <style>
-        :root {
-            --bg: #0f172a;
-            --panel: #111827;
-            --card: #0b1220;
-            --accent: #60a5fa;
-            --accent2: #34d399;
-            --text: #e5e7eb;
-            --muted: #94a3b8;
-            --border: #1f2937
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        html,
-        body {
-            height: 100%
-        }
-
-        body {
-            margin: 0;
-            background: linear-gradient(120deg, #0b1020, #0e1630 60%, #0a1228);
-            color: var(--text);
-            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
-            line-height: 1.5
-        }
-
-        a {
-            color: var(--accent);
-            text-decoration: none
-        }
-
-        a:hover {
-            text-decoration: underline
-        }
-
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: rgba(8, 13, 28, .75);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border)
-        }
-
-        .wrap {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        .logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: radial-gradient(circle at 30% 30%, #5eead4, #60a5fa);
-            box-shadow: 0 0 0 2px #0a162e inset
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            margin: 0
-        }
-
-        .sub {
-            color: var(--muted);
-            font-size: .95rem;
-            margin-top: 2px
-        }
-
-        .controls {
-            display: grid;
-            grid-template-columns: 1.2fr .8fr .8fr auto;
-            gap: 12px;
-            align-items: end;
-            margin-top: 18px
-        }
-
-        .ctrl label {
-            display: block;
-            font-size: .85rem;
-            color: var(--muted);
-            margin-bottom: 6px
-        }
-
-        .input,
-        select {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #0c1426;
-            color: var(--text);
-            outline: none
-        }
-
-        .btn {
-            padding: 10px 14px;
-            border-radius: 10px;
-            background: var(--accent);
-            color: #06121f;
-            border: 1px solid #1f3b67;
-            font-weight: 600;
-            cursor: pointer
-        }
-
-        .btn.alt {
-            background: #0c1426;
-            color: var(--text);
-            border-color: var(--border)
-        }
-
-        .btn:active {
-            transform: translateY(1px)
-        }
-
-        main {
-            padding: 24px 0
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 16px
-        }
-
-        .card {
-            grid-column: span 12;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            background: linear-gradient(180deg, #0b1220, #0b1020);
-            padding: 18px
-        }
-
-        @media (min-width:720px) {
-            .card {
-                grid-column: span 6
-            }
-        }
-
-        @media (min-width:1040px) {
-            .card {
-                grid-column: span 4
-            }
-        }
-
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            color: var(--muted);
-            font-size: .8rem
-        }
-
-        .tag .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 999px
-        }
-
-        .tag[data-level="Intro"] .dot {
-            background: #a7f3d0
-        }
-
-        .tag[data-level="Intermediate"] .dot {
-            background: #93c5fd
-        }
-
-        .tag[data-level="Advanced"] .dot {
-            background: #fcd34d
-        }
-
-        .title {
-            font-size: 1.04rem;
-            font-weight: 700;
-            margin: 6px 0 4px
-        }
-
-        .desc {
-            color: var(--muted);
-            font-size: .95rem;
-            margin: 0 0 10px
-        }
-
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 10px 0
-        }
-
-        details {
-            border: 1px dashed var(--border);
-            border-radius: 12px;
-            padding: 8px 10px
-        }
-
-        details>summary {
-            cursor: pointer;
-            font-weight: 600
-        }
-
-        details .list {
-            margin: 10px 0 0 0;
-            padding-left: 18px
-        }
-
-        details .list li {
-            margin: 4px 0
-        }
-
-        .footer {
-            margin-top: 24px;
-            color: var(--muted);
-            font-size: .9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px
-        }
-
-        .small {
-            font-size: .85rem;
-            color: var(--muted)
-        }
-
-        /* print */
-        @media print {
-
-            header,
-            .controls,
-            .footer {
-                display: none
-            }
-
-            body {
-                background: #fff;
-                color: #000
-            }
-
-            .card {
-                break-inside: avoid;
-                border-color: #ddd;
-                background: #fff
-            }
-
-            .tag {
-                border-color: #ccc
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="database.js"></script>
 </head>
 
 <body>
@@ -306,6 +46,8 @@
                 <div class="ctrl" style="display:flex;gap:8px">
                     <button class="btn" id="printBtn" title="Print or save as PDF">Print or Save PDF</button>
                     <button class="btn alt" id="resetBtn">Reset</button>
+                    <a href="admin.html" class="btn alt"
+                        style="text-decoration:none;display:inline-flex;align-items:center">Admin</a>
                 </div>
             </div>
         </div>
@@ -335,6 +77,17 @@
             { id: 11, level: "Advanced", time: 3, title: "3D Solid, Revolve or Extrude", desc: "Model a bottle, vase, or pencil holder using extrude and revolve. Optional render.", skills: ["EXTRUDE", "REVOLVE", "UNION", "SUBTRACT", "RENDER"], deliverables: ["3D model, shaded view and a viewport layout"], steps: ["Sketch profiles on 2D planes", "Revolve or extrude to create solids", "Use union and subtract for details", "Set up a camera and shaded viewport"] },
             { id: 12, level: "Advanced", time: 3, title: "Capstone, Room or Small House", desc: "Combine walls, openings, furniture, dimensions, text, and hatch. Optional exterior 3D.", skills: ["LAYERS", "BLOCK ATTRIBUTES", "DIMSTYLE", "PAPER SPACE", "PLOT"], deliverables: ["Complete plan set page, ready to print"], steps: ["Assemble plan with symbols and labels", "Add furniture blocks and annotations", "Create paper space layout and title block", "Finalize plot settings and print"] }
         ];
+
+        // Load additional projects from external database
+        async function loadAllProjects() {
+            try {
+                const additionalProjects = await projectDB.loadProjects();
+                return [...DATA, ...additionalProjects];
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                return DATA; // Fallback to original data only
+            }
+        }
 
         const grid = document.getElementById('cards');
         const search = document.getElementById('search');
@@ -381,20 +134,38 @@
             return c;
         }
 
-        function render() {
+        async function render() {
             grid.innerHTML = '';
-            const q = search.value.trim().toLowerCase();
-            const lvl = level.value;
-            const tm = time.value;
-            DATA.filter(item =>
-                (lvl === 'all' || item.level === lvl) &&
-                (tm === 'any' || String(item.time) === tm) &&
-                (q === '' || item.dataset ? item.dataset.search.includes(q) : (item.title + item.desc + item.skills.join(' ')).toLowerCase().includes(q))
-            ).forEach(item => grid.appendChild(makeCard(item)));
+            try {
+                const allProjects = await loadAllProjects();
+                const q = search.value.trim().toLowerCase();
+                const lvl = level.value;
+                const tm = time.value;
+                allProjects.filter(item =>
+                    (lvl === 'all' || item.level === lvl) &&
+                    (tm === 'any' || String(item.time) === tm) &&
+                    (q === '' || item.dataset ? item.dataset.search.includes(q) : (item.title + item.desc + item.skills.join(' ')).toLowerCase().includes(q))
+                ).forEach(item => grid.appendChild(makeCard(item)));
+            } catch (error) {
+                console.error('Error rendering projects:', error);
+                // Fallback to original data
+                DATA.forEach(item => grid.appendChild(makeCard(item)));
+            }
         }
 
-        // first render
-        DATA.forEach(item => grid.appendChild(makeCard(item)));
+        // Initial render
+        async function initializePage() {
+            try {
+                const allProjects = await loadAllProjects();
+                allProjects.forEach(item => grid.appendChild(makeCard(item)));
+            } catch (error) {
+                console.error('Error initializing page:', error);
+                DATA.forEach(item => grid.appendChild(makeCard(item)));
+            }
+        }
+
+        // Initialize page when loaded
+        initializePage();
 
         // interactions
         search.addEventListener('input', render);
