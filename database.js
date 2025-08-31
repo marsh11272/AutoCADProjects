@@ -3,12 +3,12 @@ class ProjectDatabase {
     constructor() {
         // Using JSONBin.io as a simple external JSON database
         // You can replace this with your preferred service
-        this.apiKey = '$2a$10$AgHZFgzRn9jhCP2779NBceL.p8j/KRUZK9N7gTmhPH6vxSKzpCNrS'; // Replace with your actual API key
-        this.binId = 'y68b48912ae596e708fde00f9'; // Replace with your actual bin ID
+        this.apiKey = '$2a$10$BuMLpfIcNCZftNa//YF/oexUf6AOeIz/j3BwNUY5SNutgbN3M9r8i'; // Replace with your actual API key
+        this.binId = '68b48912ae596e708fde00f9'; // Replace with your actual bin ID
         this.baseUrl = 'https://api.jsonbin.io/v3/b';
 
         // Fallback to localStorage if API is not configured
-        this.useLocalStorage = !this.apiKey.includes('$2a$10$AgHZFgzRn9jhCP2779NBceL.p8j/KRUZK9N7gTmhPH6vxSKzpCNrS') || !this.binId.includes('y68b48912ae596e708fde00f9');
+        this.useLocalStorage = !this.apiKey.includes('$2a$10$BuMLpfIcNCZftNa//YF/oexUf6AOeIz/j3BwNUY5SNutgbN3M9r8i') || !this.binId.includes('68b48912ae596e708fde00f9');
 
         // Debug logging
         console.log('🔧 ProjectDatabase initialized');
