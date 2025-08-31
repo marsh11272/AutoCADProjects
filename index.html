@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AutoCAD Project Progression for Students</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #111827;
+            --card: #0b1220;
+            --accent: #60a5fa;
+            --accent2: #34d399;
+            --text: #e5e7eb;
+            --muted: #94a3b8;
+            --border: #1f2937
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(120deg, #0b1020, #0e1630 60%, #0a1228);
+            color: var(--text);
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+            line-height: 1.5
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(8, 13, 28, .75);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border)
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: radial-gradient(circle at 30% 30%, #5eead4, #60a5fa);
+            box-shadow: 0 0 0 2px #0a162e inset
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin: 0
+        }
+
+        .sub {
+            color: var(--muted);
+            font-size: .95rem;
+            margin-top: 2px
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr .8fr auto;
+            gap: 12px;
+            align-items: end;
+            margin-top: 18px
+        }
+
+        .ctrl label {
+            display: block;
+            font-size: .85rem;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+        .input,
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #0c1426;
+            color: var(--text);
+            outline: none
+        }
+
+        .btn {
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: #06121f;
+            border: 1px solid #1f3b67;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .btn.alt {
+            background: #0c1426;
+            color: var(--text);
+            border-color: var(--border)
+        }
+
+        .btn:active {
+            transform: translateY(1px)
+        }
+
+        main {
+            padding: 24px 0
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px
+        }
+
+        .card {
+            grid-column: span 12;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: linear-gradient(180deg, #0b1220, #0b1020);
+            padding: 18px
+        }
+
+        @media (min-width:720px) {
+            .card {
+                grid-column: span 6
+            }
+        }
+
+        @media (min-width:1040px) {
+            .card {
+                grid-column: span 4
+            }
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: .8rem
+        }
+
+        .tag .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px
+        }
+
+        .tag[data-level="Intro"] .dot {
+            background: #a7f3d0
+        }
+
+        .tag[data-level="Intermediate"] .dot {
+            background: #93c5fd
+        }
+
+        .tag[data-level="Advanced"] .dot {
+            background: #fcd34d
+        }
+
+        .title {
+            font-size: 1.04rem;
+            font-weight: 700;
+            margin: 6px 0 4px
+        }
+
+        .desc {
+            color: var(--muted);
+            font-size: .95rem;
+            margin: 0 0 10px
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0
+        }
+
+        details {
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 8px 10px
+        }
+
+        details>summary {
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        details .list {
+            margin: 10px 0 0 0;
+            padding-left: 18px
+        }
+
+        details .list li {
+            margin: 4px 0
+        }
+
+        .footer {
+            margin-top: 24px;
+            color: var(--muted);
+            font-size: .9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px
+        }
+
+        .small {
+            font-size: .85rem;
+            color: var(--muted)
+        }
+
+        /* print */
+        @media print {
+
+            header,
+            .controls,
+            .footer {
+                display: none
+            }
+
+            body {
+                background: #fff;
+                color: #000
+            }
+
+            .card {
+                break-inside: avoid;
+                border-color: #ddd;
+                background: #fff
+            }
+
+            .tag {
+                border-color: #ccc
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="wrap">
+            <div class="brand">
+                <div class="logo" aria-hidden="true"></div>
+                <div>
+                    <h1>AutoCAD Project Progression</h1>
+                    <div class="sub">Twelve classroom‑friendly projects, arranged from simple to challenging</div>
+                </div>
+            </div>
+
+            <div class="controls" role="region" aria-label="Filters and actions">
+                <div class="ctrl">
+                    <label for="search">Search projects</label>
+                    <input id="search" class="input" type="search" placeholder="Try: floor plan, isometric, array" />
+                </div>
+                <div class="ctrl">
+                    <label for="level">Filter by level</label>
+                    <select id="level" class="input">
+                        <option value="all">All levels</option>
+                        <option value="Intro">Intro</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="ctrl">
+                    <label for="time">Filter by time</label>
+                    <select id="time" class="input">
+                        <option value="any">Any time</option>
+                        <option value="1">About one class</option>
+                        <option value="2">One to two classes</option>
+                        <option value="3">Multi‑day</option>
+                    </select>
+                </div>
+                <div class="ctrl" style="display:flex;gap:8px">
+                    <button class="btn" id="printBtn" title="Print or save as PDF">Print or Save PDF</button>
+                    <button class="btn alt" id="resetBtn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="grid" id="cards"></div>
+
+        <div class="footer wrap">
+            <div>Tip, open a card, then use Print to create a handout for students.</div>
+            <div class="small">Made for classroom use</div>
+        </div>
+    </main>
+
+    <script>
+        const DATA = [
+            { id: 1, level: "Intro", time: 1, title: "Geometric Shapes Worksheet", desc: "Draw circles, rectangles, polygons, and ellipses. Practice trim, extend, offset, and fillet.", skills: ["OSNAP", "TRIM", "EXTEND", "OFFSET", "FILLET", "HATCH"], deliverables: ["One DWG with labeled shapes", "Hatch fill examples", "Saved layout ready to print"], steps: ["Create a new drawing, set units", "Draw 3 circles, 2 rectangles, 1 polygon, 1 ellipse", "Use offset and fillet to round corners", "Apply hatch patterns inside two shapes", "Add text labels and a title block"] },
+            { id: 2, level: "Intro", time: 1, title: "Nameplate Design", desc: "Draw your name in block letters with a border and hatch pattern options.", skills: ["LINE", "POLYLINE", "HATCH", "ARRAY", "TEXT"], deliverables: ["DWG with nameplate", "Two hatch styles demonstrated"], steps: ["Draw a 180 by 60 rectangle border", "Sketch letters with polylines", "Add hatch inside letters", "Place name, class and date as text", "Create a viewport and set scale"] },
+            { id: 3, level: "Intro", time: 1, title: "Floor Tile Pattern", desc: "Create a repeating tile pattern using rectangular and polar arrays.", skills: ["ARRAY", "COPY", "MIRROR", "OSNAP", "ORTHO"], deliverables: ["DWG with two tile variants", "Printed layout at known scale"], steps: ["Draw a single tile module", "Use rectangular array to form a 4 by 4 grid", "Try a polar array for a circular motif", "Annotate with dimensions and a short note"] },
+            { id: 4, level: "Intermediate", time: 2, title: "Simple Furniture, Top View", desc: "Draw a table and four chairs inside a room outline. Add scale and dimensions.", skills: ["LAYER", "BLOCK", "SCALE", "DIMENSION", "OFFSET"], deliverables: ["DWG with furniture blocks", "Dimensions on key sizes"], steps: ["Set up layers for walls and furniture", "Draw room walls with proper thickness", "Create a chair as a block, insert four copies", "Add a table, center it, dimension important spans"] },
+            { id: 5, level: "Intermediate", time: 2, title: "Orthographic Projection Practice", desc: "Given a sketch, draw top, front, and right‑side views aligned correctly.", skills: ["CONSTRUCTION LINES", "PROJECT", "DIMENSION", "ANNOTATE"], deliverables: ["Sheet with three views", "Centerlines and dimensions included"], steps: ["Set up three aligned view zones", "Project edges from the front to top and side", "Add centerlines and hidden edges as needed", "Dimension overall sizes and hole centers"] },
+            { id: 6, level: "Intermediate", time: 2, title: "House Floor Plan, Basic", desc: "One room with walls, a door, and windows. Add dimensions and labels.", skills: ["WALL THICKNESS", "BLOCK", "DOOR SWING", "WINDOW", "DIMSTYLE"], deliverables: ["Basic plan with title block", "Door and window blocks"], steps: ["Offset walls to desired thickness", "Insert a door block with swing arc", "Add two windows and labels", "Dimension wall lengths and openings"] },
+            { id: 7, level: "Advanced", time: 3, title: "Multi‑Room Floor Plan", desc: "Two bedrooms, one bathroom, living room, and kitchen with doors and windows.", skills: ["LAYERS", "BLOCK ATTRIBUTES", "DIMENSION", "ANNOTATE", "HATCH"], deliverables: ["Complete plan with symbols legend", "Room schedule table"], steps: ["Lay out exterior walls and interior partitions", "Insert door and window blocks with sizes", "Add fixtures and a simple kitchen layout", "Dimension exterior and key interior spans", "Create a legend and room schedule"] },
+            { id: 8, level: "Advanced", time: 2, title: "Isometric Drawing Practice", desc: "Draw an isometric cube and cylinder, then a simple bracket in isometric.", skills: ["ISOPLANE", "ELLIPSE ISOCIRCLE", "SNAP", "DIMENSION"], deliverables: ["Sheet with three isometric drawings"], steps: ["Enable isometric snap and switch planes", "Draw a cube using isoplane left and right", "Add a cylinder with isocircle", "Attempt a small bracket from a provided sketch"] },
+            { id: 9, level: "Advanced", time: 2, title: "Site Layout, Parking Lot", desc: "Draw a small lot with lanes, parking spaces, and a crosswalk. Plot to scale.", skills: ["SCALE", "ARRAY", "OFFSET", "LTSCALE", "PLOT"], deliverables: ["Plan plotted at 1 inch equals 20 feet", "Legend for markings"], steps: ["Set drawing units to feet and inches", "Lay out lane centerlines and offsets", "Array stall markings, add ADA space", "Annotate dimensions and notes, prepare plot"] },
+            { id: 10, level: "Advanced", time: 2, title: "Detailed Object, 2D", desc: "Choose a chair, lamp, or desk. Draw in 2D with layers, blocks, and dimensions.", skills: ["BLOCK", "EXPLODE", "LAYER", "DIMENSION", "HATCH"], deliverables: ["Detailed 2D drawing with callouts"], steps: ["Set layers for outlines, hidden, center, dims", "Trace object proportions from a reference", "Convert repeated parts into blocks", "Add key dimensions and callouts"] },
+            { id: 11, level: "Advanced", time: 3, title: "3D Solid, Revolve or Extrude", desc: "Model a bottle, vase, or pencil holder using extrude and revolve. Optional render.", skills: ["EXTRUDE", "REVOLVE", "UNION", "SUBTRACT", "RENDER"], deliverables: ["3D model, shaded view and a viewport layout"], steps: ["Sketch profiles on 2D planes", "Revolve or extrude to create solids", "Use union and subtract for details", "Set up a camera and shaded viewport"] },
+            { id: 12, level: "Advanced", time: 3, title: "Capstone, Room or Small House", desc: "Combine walls, openings, furniture, dimensions, text, and hatch. Optional exterior 3D.", skills: ["LAYERS", "BLOCK ATTRIBUTES", "DIMSTYLE", "PAPER SPACE", "PLOT"], deliverables: ["Complete plan set page, ready to print"], steps: ["Assemble plan with symbols and labels", "Add furniture blocks and annotations", "Create paper space layout and title block", "Finalize plot settings and print"] }
+        ];
+
+        const grid = document.getElementById('cards');
+        const search = document.getElementById('search');
+        const level = document.getElementById('level');
+        const time = document.getElementById('time');
+
+        function tag(level) {
+            const el = document.createElement('span');
+            el.className = 'tag';
+            el.dataset.level = level;
+            el.innerHTML = `<span class="dot"></span>${level}`;
+            return el;
+        }
+
+        function makeCard(item) {
+            const c = document.createElement('article');
+            c.className = 'card';
+            c.dataset.level = item.level;
+            c.dataset.time = item.time;
+            c.dataset.title = item.title.toLowerCase();
+            c.dataset.search = (item.title + ' ' + item.desc + ' ' + item.skills.join(' ')).toLowerCase();
+
+            const top = document.createElement('div');
+            top.className = 'row';
+            top.appendChild(tag(item.level));
+            const t2 = document.createElement('span'); t2.className = 'tag'; t2.innerHTML = `<span class="dot" style="background:${item.time == 1 ? '#a7f3d0' : item.time == 2 ? '#93c5fd' : '#fcd34d'}"></span>${item.time == 1 ? 'About one class' : item.time == 2 ? 'One to two classes' : 'Multi‑day'}`; top.appendChild(t2);
+
+            const h = document.createElement('div'); h.className = 'title'; h.textContent = `${item.id}. ${item.title}`;
+            const d = document.createElement('p'); d.className = 'desc'; d.textContent = item.desc;
+
+            const skills = document.createElement('div'); skills.className = 'row';
+            item.skills.forEach(s => { const b = document.createElement('span'); b.className = 'tag'; b.textContent = s; skills.appendChild(b); });
+
+            const det = document.createElement('details');
+            const sum = document.createElement('summary'); sum.textContent = 'Instructions and deliverables';
+            const ul1 = document.createElement('ul'); ul1.className = 'list';
+            item.steps.forEach(x => { const li = document.createElement('li'); li.textContent = x; ul1.appendChild(li); });
+            const h2 = document.createElement('div'); h2.style.marginTop = '8px'; h2.innerHTML = '<strong>Deliverables</strong>';
+            const ul2 = document.createElement('ul'); ul2.className = 'list';
+            item.deliverables.forEach(x => { const li = document.createElement('li'); li.textContent = x; ul2.appendChild(li); });
+            det.appendChild(sum); det.appendChild(ul1); det.appendChild(h2); det.appendChild(ul2);
+
+            c.appendChild(top); c.appendChild(h); c.appendChild(d); c.appendChild(skills); c.appendChild(det);
+            return c;
+        }
+
+        function render() {
+            grid.innerHTML = '';
+            const q = search.value.trim().toLowerCase();
+            const lvl = level.value;
+            const tm = time.value;
+            DATA.filter(item =>
+                (lvl === 'all' || item.level === lvl) &&
+                (tm === 'any' || String(item.time) === tm) &&
+                (q === '' || item.dataset ? item.dataset.search.includes(q) : (item.title + item.desc + item.skills.join(' ')).toLowerCase().includes(q))
+            ).forEach(item => grid.appendChild(makeCard(item)));
+        }
+
+        // first render
+        DATA.forEach(item => grid.appendChild(makeCard(item)));
+
+        // interactions
+        search.addEventListener('input', render);
+        level.addEventListener('change', render);
+        time.addEventListener('change', render);
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            search.value = ''; level.value = 'all'; time.value = 'any'; render();
+        });
+        document.getElementById('printBtn').addEventListener('click', () => window.print());
+    </script>
+</body>
+
+</html>
